@@ -1,0 +1,301 @@
+---
+swagger: "2.0"
+info:
+  version: "0.1b"
+  title: "<BCA Data API>"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+paths:
+  /properties:
+    get:
+      description: "Returns a list of results matching supplied search parameters."
+      parameters:
+      - name: "address"
+        in: "query"
+        description: "address of the property"
+        required: true
+        type: "string"
+        format: "string"
+      - name: "start"
+        in: "query"
+        description: "Pagination offset. <br> 0 (Zero) based <br> Default to 0 Ex.\
+          \ ?start=0"
+        required: false
+        type: "integer"
+      - name: "count"
+        in: "query"
+        description: "Pagination record count<br> Defaults to 10<br> Ex. ?count=10"
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "List of Properties matching search parameters."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SearchResult"
+          headers:
+            X-results-count:
+              type: "integer"
+              description: "Total number of results available."
+        209:
+          description: "List of Properties matching search parameters where more than\
+            \ 1 page of results found."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SearchResult"
+          headers:
+            X-results-count:
+              type: "integer"
+              description: "Total number of results available."
+        400:
+          description: "Bad Request. <br> The request could not be understood by the\
+            \ server due to malformed syntax. The client SHOULD NOT repeat the request\
+            \ without modifications."
+        401:
+          description: "Unauthorized. <br> The request requires user authentication."
+        403:
+          description: "Forbidden. <br> The server understood the request, but is\
+            \ refusing to fulfill it."
+        422:
+          description: "Unprocessable Entity. <br> The server understands the content\
+            \ type of the request entity, and the syntax of the request entity is\
+            \ correct but was unable to process the contained instructions."
+        500:
+          description: "Internal server error."
+        503:
+          description: "Service Unavailable."
+  /properties/{id}:
+    get:
+      description: "Returns property information for the property with the supplied\
+        \ id."
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Unique Identifier used by BCA to identify the property"
+        required: true
+        type: "string"
+        format: "string"
+      responses:
+        200:
+          description: "Property information for the specified property"
+          schema:
+            $ref: "#/definitions/Property"
+        400:
+          description: "Bad Request. <br> The request could not be understood by the\
+            \ server due to malformed syntax. The client SHOULD NOT repeat the request\
+            \ without modifications."
+        401:
+          description: "Unauthorized. <br> The request requires user authentication."
+        403:
+          description: "Forbidden. <br> The server understood the request, but is\
+            \ refusing to fulfill it."
+        422:
+          description: "Unprocessable Entity. <br> The server understands the content\
+            \ type of the request entity, and the syntax of the request entity is\
+            \ correct but was unable to process the contained instructions."
+        500:
+          description: "Internal server error."
+        503:
+          description: "Service Unavailable."
+definitions:
+  SearchResult:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique Identifier used by BCA's system to identify the property."
+      area:
+        type: "string"
+        description: "Identifies a BCA Assessment Area, which is a method that BCA\
+          \ uses for organizing each geographic region of the province of BC."
+      jurisdiction:
+        type: "string"
+        description: "Identifies a Taxing Jurisdiction.  This can be a municipal or\
+          \ rural taxing jurisdiction.  This is the next level down of categorization\
+          \ within a BCA Assessment Area."
+      jurisdictionDesc:
+        type: "string"
+        description: "Identifies a Taxing Jurisdiction.  This can be a municipal or\
+          \ rural taxing jurisdiction.  This is the next level down of categorization\
+          \ within a BCA Assessment Area."
+      rollNum:
+        type: "string"
+        description: "A \"unique\" identifier when combined with Jurisdiction that\
+          \ identifies a specific folio.  Different formats for roll numbers exist,\
+          \ depending on the Jurisdiction.  Any special characters have been removed."
+      rollNumFormatted:
+        type: "string"
+        description: "A \"unique\" identifier when combined with Jurisdiction that\
+          \ identifies a specific folio.  Different formats for roll numbers exist,\
+          \ depending on the Jurisdiction."
+      propertyAddress:
+        type: "string"
+        description: "Formatted concatenation of address fields"
+  Property:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique Identifier used by BCA's system to identify the property."
+      area:
+        type: "string"
+        description: "Identifies a BCA Assessment Area, which is a method that BCA\
+          \ uses for organizing each geographic region of the province of BC."
+      jurisdiction:
+        type: "string"
+        description: "Identifies a Taxing Jurisdiction.  This can be a municipal or\
+          \ rural taxing jurisdiction.  This is the next level down of categorization\
+          \ within a BCA Assessment Area."
+      jurisdictionDesc:
+        type: "string"
+        description: "Identifies a Taxing Jurisdiction.  This can be a municipal or\
+          \ rural taxing jurisdiction.  This is the next level down of categorization\
+          \ within a BCA Assessment Area."
+      rollNum:
+        type: "string"
+        description: "A \"unique\" identifier when combined with Jurisdiction that\
+          \ identifies a specific folio.  Different formats for roll numbers exist,\
+          \ depending on the Jurisdiction.  Any special characters have been removed."
+      rollNumFormatted:
+        type: "string"
+        description: "A \"unique\" identifier when combined with Jurisdiction that\
+          \ identifies a specific folio.  Different formats for roll numbers exist,\
+          \ depending on the Jurisdiction."
+      neighbourhoodCode:
+        type: "string"
+        description: "Identifier assigned by BCA to organize a jurisdiction into appraisal\
+          \ areas or like properties.  Next level of categorization below jurisdiction."
+      neighbourhoodDesc:
+        type: "string"
+        description: "Identifier assigned by BCA to organize a jurisdiction into appraisal\
+          \ areas or like properties.  Next level of categorization below jurisdiction."
+      landSize:
+        type: "string"
+        description: "Sq. Feet or acres."
+      freeformAddress:
+        type: "string"
+        description: "Freeform address that is entered if the property identification\
+          \ information does not match one of the pre-set fields."
+      unitNumber:
+        type: "string"
+        description: "The specific identifier within a portion of a building / dwelling\
+          \ that is used to further refine a specific property."
+      streetNumber:
+        type: "string"
+        description: "Municipality numbering for improvement (building)."
+      streetName:
+        type: "string"
+        description: "Identifier of the property street name."
+      streetType:
+        type: "string"
+        description: "e.g. Road, Street, Crescent."
+      preDirectional:
+        type: "string"
+        description: "Further refinement of the Street Name to facilitate location\
+          \ of building."
+      postDirectional:
+        type: "string"
+        description: "Further refinement of the Street Name to facilitate location\
+          \ of building."
+      cityCode:
+        type: "string"
+        description: "Name of the city in which the property resides."
+      cityDesc:
+        type: "string"
+        description: "Name of the city in which the property resides."
+      postalCode:
+        type: "string"
+        description: "Postal code of the property."
+      province:
+        type: "string"
+        description: "Province of the property."
+      propertyAddress:
+        type: "string"
+        description: "Formatted concatenation of address fields"
+      yearBuilt:
+        type: "integer"
+        description: "The year that the improvement was completed."
+      bedrooms:
+        type: "integer"
+        description: "The number of bedrooms in the improvement."
+      baths:
+        type: "integer"
+        description: "The number of bathrooms in the improvement."
+      carports:
+        type: "integer"
+        description: "The number of carports on the land."
+      garages:
+        type: "integer"
+        description: "The number of garages on the land."
+      totalAssessed:
+        type: "integer"
+        description: "The total assessed value of the property."
+      strataTotalArea:
+        type: "integer"
+        description: "The total common area shared by the Strata properties."
+      firstFloorArea:
+        type: "integer"
+        description: "The total area of the first floor of the primary improvement\
+          \ (building)."
+      secondFloorArea:
+        type: "integer"
+        description: "The total area of the second floor of the primary improvement\
+          \ (building)."
+      basementFinishArea:
+        type: "integer"
+        description: "The total finished area of a residential property."
+      basementFinishAreaComm:
+        type: "integer"
+        description: "The total finished basement area of a residential property."
+      basementFinishAreaIncm:
+        type: "integer"
+        description: "The total finished basement area of a strata property."
+      mobileHomeWidth:
+        type: "integer"
+        description: "Identifies the width of the manufactured Home."
+      mobileHomeLength:
+        type: "integer"
+        description: "Identifies the length of the manufactured Home."
+      moblieHomeTotalArea:
+        type: "integer"
+        description: "Identifies the total area of the manufactured Home."
+      rateCodeSummary:
+        type: "string"
+        description: "Rate Code of the land."
+      farmFlag:
+        type: "boolean"
+        description: "Indicates whether the property is being used for farming."
+      schoolDistrictCode:
+        type: "string"
+        description: "Identifier for the school district that services this property.\
+          \ Alternatively - Identifier for the school district boundary / catchment\
+          \ area that a property lies within."
+      storiesBuilding:
+        type: "integer"
+        description: "Identifies the number of stories in the predominant building."
+      grossLeasableArea:
+        type: "integer"
+        description: "Identifies the gross amount of leasable area."
+      netLeasableArea:
+        type: "integer"
+        description: "Identifies the net amount of leasable area."
+      numUnitApt:
+        type: "integer"
+        description: "Number Of Apartment Units."
+      residentialAdditionalBuildings:
+        type: "boolean"
+        description: "Identifies if there are additional residential buildings on\
+          \ the land."
+      commercialAdditionalBuildings:
+        type: "boolean"
+        description: "Identifies if there are additional commercial buildings on the\
+          \ land."
+      totalAssessedLand:
+        type: "integer"
+        description: "The total assessed value of the land."
+      totalAssessedBuilding:
+        type: "integer"
+        description: "The total assessed value of the improvement."

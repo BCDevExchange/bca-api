@@ -1,0 +1,16 @@
+{
+  "name": "&lt;bca-data-api&gt;",
+  "version": "0.1b",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "swagger"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.9.*"
+  }
+}
