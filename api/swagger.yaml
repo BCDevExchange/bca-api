@@ -8,8 +8,10 @@ info:
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 paths:
   /properties:
+    x-swagger-router-controller: Default
     get:
       description: "Returns a list of results matching supplied search parameters."
+      operationId: propertiesGet
       parameters:
       - name: "address"
         in: "query"
@@ -71,6 +73,7 @@ paths:
     get:
       description: "Returns property information for the property with the supplied\
         \ id."
+      operationId: propertiesIdGet
       parameters:
       - name: "id"
         in: "path"

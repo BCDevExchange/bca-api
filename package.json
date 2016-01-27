@@ -1,6 +1,6 @@
 {
-  "name": "&lt;bca-data-api&gt;",
-  "version": "0.1b",
+  "name": "bca-data-api",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "keywords": [
