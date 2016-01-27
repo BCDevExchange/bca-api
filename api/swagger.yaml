@@ -70,6 +70,7 @@ paths:
         503:
           description: "Service Unavailable."
   /properties/{id}:
+    x-swagger-router-controller: Default
     get:
       description: "Returns property information for the property with the supplied\
         \ id."
